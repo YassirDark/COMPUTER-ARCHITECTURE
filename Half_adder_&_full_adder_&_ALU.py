@@ -27,11 +27,22 @@ def half_adder(a, b):
 def full_adder(a, b, c):
     s1, c1 = half_adder(a, b)
     s, c_out = half_adder(s1, c)
-    return s, XOR_gate(c1, c_out)
+    c_out = OR_gate(c1, c_out)
+    return s, c_out
+
+def ALU(a, b, c, opcode):
+    if opcode == 0:
+        s, c = half_adder(a, b)
+    elif opcode == 1:
+        s, c = full_adder(a, b, c)
+    else:
+        raise ValueError("Invalid opcode. Opcode must be 0 or 1.")
+    
+    return s, c
 
 #Test the half-adder and the full-adder
 
-print("\tHalf Adder:\n")
+print("\tHalf Adder:")
 print("0 0 =",half_adder(0, 0))
 print("0 1 =",half_adder(0, 1))
 print("1 0 =",half_adder(1, 0))
@@ -46,3 +57,29 @@ print("1 0 0 =",full_adder(1, 0, 0))
 print("1 0 1 =",full_adder(1, 0, 1)) 
 print("1 1 0 =",full_adder(1, 1, 0))
 print("1 1 1 =",full_adder(1, 1, 1))
+
+print("\n\tTest out my ALU : Arithmetic Logic Unit")
+
+# Test 1: Half-adder (opcode = 0)
+a, b, c, opcode = 0, 0, 1, 0
+s, c_out = ALU(a, b, c, opcode)
+print(f"\nInput: a={a}, b={b}, c={c}, opcode={opcode}")
+print(f"Output: s={s}, c_out={c_out}")
+
+# Test 2: Full-adder (opcode = 1)
+a, b, c, opcode = 0, 0, 1, 1
+s, c_out = ALU(a, b, c, opcode)
+print(f"\nInput: a={a}, b={b}, c={c}, opcode={opcode}")
+print(f"Output: s={s}, c_out={c_out}")
+
+# Test 3: Half-adder (opcode = 0)
+a, b, c, opcode = 1, 1, 1, 0
+s, c_out = ALU(a, b, c, opcode)
+print(f"\nInput: a={a}, b={b}, c={c}, opcode={opcode}")
+print(f"Output: s={s}, c_out={c_out}")
+
+# Test 4: Full-adder (opcode = 1)
+a, b, c, opcode = 1, 1, 1, 1
+s, c_out = ALU(a, b, c, opcode)
+print(f"\nInput: a={a}, b={b}, c={c}, opcode={opcode}")
+print(f"Output: s={s}, c_out={c_out}")
